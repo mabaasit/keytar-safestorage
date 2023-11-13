@@ -1,5 +1,8 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { useEffect, useState, useCallback, FormEvent } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Container, Row, Table, Card, Form, Button } from 'react-bootstrap';
 import { UserData } from './user-storage';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -38,41 +41,50 @@ const App = () => {
   }, [fetchUsers]);
 
   return (
-    <div>
-      <h2>Hello from React!</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Password</th>
-            <th>ID</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user, index) => (
-            <tr style={{border: '1px solid #ececec'}} key={index}>
-              <td>{user.name}</td>
-              <td>{user.password}</td>
-              <td>{user.id}</td>
-              <td>
-                <button onClick={() => deleteUser(user.id)}>Delete</button>
-              </td>
+    <Container style={{marginTop: '20px'}}>
+      <Row>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Password</th>
+              <th>ID</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.map((user, index) => (
+              <tr style={{border: '1px solid #ececec'}} key={index}>
+                <td>{user.name}</td>
+                <td>{user.password}</td>
+                <td>{user.id}</td>
+                <td>
+                  <Button variant='danger' onClick={() => deleteUser(user.id)}>Delete</Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </Row>
 
-      <br />
-      <hr />
-      <br />
-
-      <form onSubmit={saveForm}>
-        <input onChange={e => setName(e.target.value)} value={name} type="text" placeholder="Enter your name" />
-        <input onChange={e => setPassword(e.target.value)} value={password} type="password" placeholder="Enter your password" />
-        <button type='submit' onClick={saveForm}>Submit</button>
-      </form>
-    </div>
+      <Row>
+        <Card style={{padding: '20px 10px'}}>
+          <Form onSubmit={saveForm}>
+            <Form.Group className="mb-3">
+              <Form.Label htmlFor='name'>Name</Form.Label>
+              <Form.Control id='name' onChange={e => setName(e.target.value)} value={name} type="text" placeholder="Jane" />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label htmlFor='password'>Password</Form.Label>
+              <Form.Control id='password' onChange={e => setPassword(e.target.value)} value={password} type="password" placeholder="********" />
+            </Form.Group>
+            <Button onClick={saveForm} variant="primary" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </Card>
+      </Row>
+    </Container>
   );
 }
 
